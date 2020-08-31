@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { NgModule, Component } from '@angular/core';
+import { RouterModule, CanActivate } from '@angular/router';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
@@ -14,6 +14,8 @@ import { MemberDetailsComponent } from './member-details/member-details.componen
 import { MembersComponent } from './members/members.component';
 import { LoginComponent } from './login/login.component';
 
+import { AuthGuard } from './auth/auth-guard.service';
+
 // We may be missing a route...
 const ROUTES = [
   {
@@ -23,7 +25,13 @@ const ROUTES = [
   },
   {
     path: 'members',
-    component: MembersComponent
+    component: MembersComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'memberdetails/:id',
+    component : MemberDetailsComponent,
+    canActivate : [AuthGuard]
   },
   {
     path: 'login',

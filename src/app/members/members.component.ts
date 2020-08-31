@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Router, ActivatedRoute, ParamMap } from '@angular/router';
+
 import { AppService } from '../app.service';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-members',
@@ -17,10 +18,21 @@ export class MembersComponent implements OnInit {
   }
 
   goToAddMemberForm() {
-    console.log(`Hmmm...we didn't navigate anywhere`);
+    this.router.navigate(['/memberdetails/0']);
   }
 
-  editMemberByID(id: number) {}
+  editMemberByID(id: number) {
+   // console.log('edit', id);
+    this.router.navigate(['/memberdetails/' + id]);
+  }
 
-  deleteMemberById(id: number) {}
+  deleteMemberById(id: number) {
+   // console.log('delete', id);
+    if(confirm('Are you sure you want to remove this user?')) {
+      this.appService.deleteMember(id).subscribe(isDeleted => {
+        this.appService.getMembers().subscribe(members => (this.members = members));
+       // console.log('deleted?:', isDeleted);
+        } );
+    }
+  }
 }
