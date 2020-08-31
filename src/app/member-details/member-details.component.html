@@ -1,57 +1,115 @@
 <div class="container-fluid col-md-6">
-  <h3 class="text-center lead">Add Member to Racing Team</h3>
-  <br />
-  <!--Template Driven Form or Model Driven Form?-->
-  <form (ngSubmit)="onSubmit(memberForm)">
-    <div>
-      <div class="row">
-        <div class="col-md-6">
-          <input
+	<h3 class="text-center lead">Add Member to Racing Team</h3>
+	<br />
+	<!--Template Driven Form or Model Driven Form?-->
+	<form #memberForm="ngForm" (ngSubmit)="onSubmit(memberForm)" novalidate>
+		<div>
+			<div class="row">
+				<div class="col-md-6">
+					<input
+            required
+            id="firstName"
+            [(ngModel)]="memberModel.firstName"
+            name="firstName"
             type="text"
             class="form-control"
             id="firstName"
             placeholder="First Name"
+            #firstName="ngModel"
           />
-        </div>
-        <div class="col-md-6">
-          <input
+					<div *ngIf="!firstName?.valid && (firstName?.dirty || firstName?.touched)"
+              class="alert alert-danger">
+						<div *ngIf="firstName?.errors.required">
+              First Name is required.
+            </div>
+					</div>
+				</div>
+				<div class="col-md-6">
+					<input
+          [(ngModel)]="memberModel.lastName"
+            required 
+            name="lastName"
             type="text"
             class="form-control"
             id="lastName"
             placeholder="Last Name"
+            #lastName="ngModel"
           />
-        </div>
-      </div>
-      <br />
-      <div class="row">
-        <div class="col-md-6">
-          <input
+					<div *ngIf="!lastName?.valid && (lastName?.dirty || lastName?.touched)"
+              class="alert alert-danger">
+						<div *ngIf="lastName?.errors.required">
+              Last Name is required.
+            </div>
+					</div>
+				</div>
+			</div>
+			<br />
+			<div class="row">
+				<div class="col-md-6">
+					<input
+          [(ngModel)]="memberModel.jobTitle"
+            required 
+            name="jobTitle"
             type="text"
             class="form-control"
             id="jobTitle"
             placeholder="Job Title"
+            #jobTitle="ngModel"
           />
-        </div>
-        <!--We may have to make a service call to get this list-->
-        <select id="team" class="col-md-6 custom-select">
-          <option *ngFor="let team of teams">{{ team.teamName }}</option>
-        </select>
-      </div>
-      <br />
-      <div class="form-group col-md-6">
-        <div class="row">
-          <label id="activeStatus" class="md-check lead">
-            <input type="radio" value="Active" name="status" /> Active
+					<div *ngIf="!jobTitle?.valid && (jobTitle?.dirty || jobTitle?.touched)"
+              class="alert alert-danger">
+						<div *ngIf="jobTitle?.errors.required">
+              Job Title is required.
+            </div>
+					</div>
+				</div>
+				<!--We may have to make a service call to get this list-->
+				<div class="col-md-6">
+					<select [(ngModel)]="memberModel.team" name="team" id="team" 
+        required class="col-md-6 custom-select"
+        #team="ngModel" >
+						<option value="" >Choose your team</option>
+						<option *ngFor="let team of teams" [ngValue]="team.teamName" >{{ team.teamName }}</option>
+					</select>
+					<div *ngIf="!team?.valid && (team?.dirty || team?.touched)"
+              class="alert alert-danger">
+						<div *ngIf="team?.errors.required">
+              Team is required.
+            </div>
+					</div>
+				</div>
+			</div>
+			<br />
+			<div class="form-group col-md-6">
+				<div class="row">
+					<label id="activeStatus" class="md-check lead">
+						<input type="radio" required value="Active" #status="ngModel" name="status" [(ngModel)]="memberModel.status" /> Active
+          
+					</label>
+					<label class="md-check lead">
+						<input type="radio" required value="Inactive" #status="ngModel" name="status" [(ngModel)]="memberModel.status" /> Inactive
+          
           </label>
-          <label class="md-check lead">
-            <input type="radio" value="Inactive" name="status" /> Inactive
-          </label>
-        </div>
-      </div>
-    </div>
-    <!--Disable if form is invalid-->
-    <button type="submit" class="btn btn-primary pull-right">
+          <div *ngIf="!status?.valid && (status?.dirty || status?.touched)"
+              class="alert alert-danger">
+            <div *ngIf="status?.errors.required">
+              Status is required.
+            </div>
+          </div>
+				</div>
+			</div>
+		</div>
+		<!--Disable if form is invalid-->
+		<button type="submit" class="btn btn-primary pull-left"
+    [disabled]="!memberForm.valid"
+    >
       Save Member
     </button>
-  </form>
+    &nbsp;
+    
+		<button (click)="clickCancel()"  class="btn btn-danger pull-right"
+    >
+    Back to member
+    </button>
+	</form>
 </div>
